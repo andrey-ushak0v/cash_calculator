@@ -12,7 +12,7 @@ class Record:
         self.date: dt.date = dt.date.today()
         if date is not None:
             self.date = dt.datetime.strptime(date, '%d.%m.%Y').date()
-       
+
 
 class Calculator:
     def __init__(self, limit):
@@ -84,7 +84,7 @@ cash_calculator.add_record(Record(amount=100, comment="beer",
                                   date="07.08.2021"))
 cash_calculator.add_record(Record(amount=5, comment="tea",
                                   date="07.08.2021"))
-print(cash_calculator.get_today_cash_remained('rub'))           
+print(cash_calculator.get_today_cash_remained('rub'))
 calories_calculator = CaloriesCalculator(2000)
 calories_calculator.add_record(Record(amount=180, comment="pizza",
                                       date="07.08.2021"))

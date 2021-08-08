@@ -1,5 +1,7 @@
 import datetime as dt
 from typing import Optional
+
+
 DATE_FORMAT = '%d.%m.%Y'
 
 
@@ -25,14 +27,14 @@ class Calculator:
 
     def get_today_stats(self):
         today = dt.date.today()
-        return(sum(i.amount for i in self.records
-               if i.date == today))
+        return sum(i.amount for i in self.records
+                   if i.date == today)
 
     def get_week_stats(self):
         today = dt.date.today()
         first_day_from_seven = today - dt.timedelta(days=7)
-        return(sum(i.amount for i in self.records
-               if first_day_from_seven <= i.date <= today))
+        return sum(i.amount for i in self.records
+                   if first_day_from_seven <= i.date <= today)
 
 
 class CashCalculator(Calculator):
@@ -48,9 +50,9 @@ class CashCalculator(Calculator):
                                  limit / self.USD_RATE, 'USD'),
                          'eur': (today_stats / self.EURO_RATE,
                                  limit / self.EURO_RATE, 'Euro')}
-        money, limit_money, rate = currency_dict[currency]
         if currency not in currency_dict:
-            return ('неизвестная валюта')
+            return('неизвестная валюта')
+        money, limit_money, rate = currency_dict[currency]
         balance = abs(limit_money - money)
         if limit > today_stats:
             return(f'На сегодня осталось{balance: .2f}'
@@ -67,6 +69,6 @@ class CaloriesCalculator(Calculator):
         today_stats = self.get_today_stats()
         if limit > today_stats:
             new_limit_cal = limit - today_stats
-            return(f'Сегодня можно съесть что-нибудь ещё, но с общей'
+            return('Сегодня можно съесть что-нибудь ещё, но с общей'
                    f' калорийностью не более {new_limit_cal} кКал')
         return('Хватит есть!')

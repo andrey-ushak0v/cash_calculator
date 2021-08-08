@@ -26,17 +26,13 @@ class Calculator:
     def get_today_stats(self):
         today = dt.date.today()
         return(sum(i.amount for i in self.records
-            if i.date == today))
-            
+               if i.date == today))
 
     def get_week_stats(self):
         today = dt.date.today()
-        week_stats = 0
         first_day_from_seven = today - dt.timedelta(days=7)
-        for i in self.records:
-            if today >= i.date >= first_day_from_seven:
-                week_stats = week_stats + i.amount
-        return week_stats
+        return(sum(i.amount for i in self.records
+               if first_day_from_seven <= i.date <= today))
 
 
 class CashCalculator(Calculator):
@@ -74,20 +70,3 @@ class CaloriesCalculator(Calculator):
             return(f'Сегодня можно съесть что-нибудь ещё, но с общей'
                    f' калорийностью не более {new_limit_cal} кКал')
         return('Хватит есть!')
-
-
-cash_calculator = CashCalculator(1000)
-cash_calculator.add_record(Record(amount=400, comment="beer",
-                                  date="07.08.2021"))
-cash_calculator.add_record(Record(amount=100, comment="beer",
-                                  date="07.08.2021"))
-cash_calculator.add_record(Record(amount=5, comment="tea",
-                                  date="07.08.2021"))
-print(cash_calculator.get_today_cash_remained('rub'))
-calories_calculator = CaloriesCalculator(2000)
-calories_calculator.add_record(Record(amount=180, comment="pizza",
-                                      date="07.08.2021"))
-calories_calculator.add_record(Record(amount=1, comment="pizza",
-                                      date="07.08.2021"))
-calories_calculator.add_record(Record(amount=500, comment="pizza",
-                                      date="07.08.2021"))

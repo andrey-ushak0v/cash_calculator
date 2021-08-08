@@ -43,32 +43,30 @@ class CashCalculator(Calculator):
     EURO_RATE = 85.00
 
     def get_today_cash_remained(self, currency):
-        limit = self.limit
         today_stats = self.get_today_stats()
-        currency_dict = {'rub': (today_stats, limit, 'руб'),
+        currency_dict = {'rub': (today_stats, self.limit, 'руб'),
                          'usd': (today_stats / self.USD_RATE,
-                                 limit / self.USD_RATE, 'USD'),
+                                 self.limit / self.USD_RATE, 'USD'),
                          'eur': (today_stats / self.EURO_RATE,
-                                 limit / self.EURO_RATE, 'Euro')}
+                                 self.limit / self.EURO_RATE, 'Euro')}
         if currency not in currency_dict:
-            return('неизвестная валюта')
+            return 'неизвестная валюта'
         money, limit_money, rate = currency_dict[currency]
         balance = abs(limit_money - money)
-        if limit > today_stats:
+        if self.limit > today_stats:
             return(f'На сегодня осталось{balance: .2f}'
                    f' {rate}')
-        elif limit == today_stats:
-            return('Денег нет, держись')
+        elif self.limit == today_stats:
+            return'Денег нет, держись'
         return(f'Денег нет, держись: твой долг -{balance: .2f}'
                f' {rate}')
 
 
 class CaloriesCalculator(Calculator):
     def get_calories_remained(self):
-        limit = self.limit
         today_stats = self.get_today_stats()
-        if limit > today_stats:
-            new_limit_cal = limit - today_stats
+        if self.limit > today_stats:
+            new_limit_cal = self.limit - today_stats
             return('Сегодня можно съесть что-нибудь ещё, но с общей'
                    f' калорийностью не более {new_limit_cal} кКал')
-        return('Хватит есть!')
+        return'Хватит есть!'

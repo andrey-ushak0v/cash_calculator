@@ -35,6 +35,9 @@ class Calculator:
         first_day_from_seven = today - dt.timedelta(days=7)
         return sum(i.amount for i in self.records
                    if first_day_from_seven <= i.date <= today)
+    
+    def balance(self):
+        return self.limit - self.get_today_stats()
 
 
 class CashCalculator(Calculator):
@@ -66,7 +69,7 @@ class CaloriesCalculator(Calculator):
     def get_calories_remained(self):
         today_stats = self.get_today_stats()
         if self.limit > today_stats:
-            new_limit_cal = self.limit - today_stats
+            new_limit = self.balance()
             return('Сегодня можно съесть что-нибудь ещё, но с общей'
-                   f' калорийностью не более {new_limit_cal} кКал')
+                   f' калорийностью не более {new_limit} кКал')
         return'Хватит есть!'

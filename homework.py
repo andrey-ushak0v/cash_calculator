@@ -24,12 +24,10 @@ class Calculator:
         self.records.append(record)
 
     def get_today_stats(self):
-        today_stats = 0
         today = dt.date.today()
-        for i in self.records:
-            if i.date == today:
-                today_stats = today_stats + i.amount
-        return today_stats
+        return(sum(i.amount for i in self.records
+            if i.date == today))
+            
 
     def get_week_stats(self):
         today = dt.date.today()

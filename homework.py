@@ -35,34 +35,34 @@ class Calculator:
         first_day_from_seven = today - dt.timedelta(days=7)
         return sum(i.amount for i in self.records
                    if first_day_from_seven <= i.date <= today)
-    
+
     def balance(self):
-        return self.limit - self.get_today_stats()
+        return abs(self.limit - self.get_today_stats())
 
 
 class CashCalculator(Calculator):
 
-    USD_RATE = 70.00
-    EURO_RATE = 85.00
+    USD_RATE = 60.00
+    EURO_RATE = 70.00
+    RUB_RATE = 1.00
+
+    money: dict = {'rub': (RUB_RATE, 'руб'),
+                   'usd': (USD_RATE, 'USD'),
+                   'eur': (EURO_RATE, 'Euro')}
 
     def get_today_cash_remained(self, currency):
         today_stats = self.get_today_stats()
-        currency_dict = {'rub': (today_stats, self.limit, 'руб'),
-                         'usd': (today_stats / self.USD_RATE,
-                                 self.limit / self.USD_RATE, 'USD'),
-                         'eur': (today_stats / self.EURO_RATE,
-                                 self.limit / self.EURO_RATE, 'Euro')}
-        if currency not in currency_dict:
+        if currency not in self.money:
             return 'неизвестная валюта'
-        money, limit_money, rate = currency_dict[currency]
-        balance = abs(limit_money - money)
+        rate, rate_name = self.money[currency]
+        balance = self.balance()
         if self.limit > today_stats:
-            return(f'На сегодня осталось{balance: .2f}'
-                   f' {rate}')
+            return(f'На сегодня осталось{balance / rate: .2f}'
+                   f' {rate_name}')
         elif self.limit == today_stats:
             return'Денег нет, держись'
-        return(f'Денег нет, держись: твой долг -{balance: .2f}'
-               f' {rate}')
+        return(f'Денег нет, держись: твой долг -{balance / rate: .2f}'
+               f' {rate_name}')
 
 
 class CaloriesCalculator(Calculator):
